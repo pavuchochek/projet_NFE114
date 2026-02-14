@@ -1,11 +1,12 @@
 <?php
 
-public class Database extends Singleton {
+class Database {
     private $host;
     private $dbname;
     private $username;
     private $password;
     private $conn;
+    private static $instance = null;
 
     private function __construct($host, $dbname, $username, $password) {
         $this->host = $host;
@@ -26,7 +27,12 @@ public class Database extends Singleton {
 
     public static function getInstance() {
         if (self::$instance === null) {
-            self::$instance = new self($_ENV['MYSQL_HOST'], $_ENV['MYSQL_DATABASE'], $_ENV['MYSQL_USER'], $_ENV['MYSQL_PASSWORD']);
+            self::$instance =  new self(
+                getenv('MYSQL_HOST'),
+                getenv('MYSQL_DATABASE'),
+                getenv('MYSQL_USER'),
+                getenv('MYSQL_PASSWORD')
+            );
         }
         return self::$instance;
     }

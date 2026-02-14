@@ -1,6 +1,6 @@
 services:
  php:
-    image: php:8.2-apache
+    build: ./docker/php
     container_name: fitbooking_php
     volumes:
       - ./src:/var/www/html
@@ -9,19 +9,24 @@ services:
       - mysql
     ports:
       - "8080:80"
+    env_file:
+      - .env
       
  mysql:
       image: mysql:5.7
       container_name: fitbooking_mysql
-      env_file:
-        - .env
+      environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: fitbooking
+        MYSQL_USER: fituser
+        MYSQL_PASSWORD: fitpass
       restart: always
       command: 
       ports:
         - "3306:3306"
       volumes:
         - mysql_data:/var/lib/mysql
-        - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+        - ./db/init-db.sql:/docker-entrypoint-initdb.d/init.sql
 
 volumes:
   mysql_data:

@@ -7,11 +7,11 @@
 </head>
 <body>
     <h1>Login</h1>
-    <form action="/api/auth.php" method="post">
+    <form action="/api/auth.php" method="post" id="loginForm">
         <select name="role" required>
-            <option value="">Select Role</option>
             <option value="adherent">Adherent</option>
             <option value="coach">Coach</option>
+            <option value="admin">Admin</option>
         </select>
         <br>
         <label for="email">Email:</label>
@@ -22,5 +22,21 @@
         <br>
         <button type="submit">Login</button>
     </form>
+    <script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const response = await fetch('/api/auth.php', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+        if(data.error) {
+            alert(data.error);
+        } else {
+            window.location.href = '/index.php';
+        }
+    });
+    </script>
 </body>
 </html>

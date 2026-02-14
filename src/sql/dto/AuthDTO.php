@@ -1,14 +1,14 @@
 <?php
-
+require('../models/Database.php');
 class AuthDTO  {
 
     public static function login($email, $password, $role) {
         switch($role) {
-            case 'adherent':
+            case 'Adherent':
                 return self::loginAdherent($email, $password);
-            case 'coach':
+            case 'Coach':
                 return self::loginCoach($email, $password);
-            case 'admin':
+            case 'Admin':
                 return self::loginAdmin($email, $password);
             default:
                 return false;

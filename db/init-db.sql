@@ -1,3 +1,4 @@
+USE fitbooking;
 CREATE TABLE IF NOT EXISTS salle(
    id_salle INT AUTO_INCREMENT,
    nom VARCHAR(50) NOT NULL,
@@ -56,12 +57,6 @@ CREATE TABLE IF NOT EXISTS participe(
    FOREIGN KEY(id_cours) REFERENCES cours(id_cours)
 );
 
-
-TRUNCATE TABLE salle;
-TRUNCATE TABLE coach;
-TRUNCATE TABLE adherent;
-TRUNCATE TABLE cours;
-TRUNCATE TABLE participe;
 
 
 INSERT INTO salle (nom, capacite_max) VALUES
