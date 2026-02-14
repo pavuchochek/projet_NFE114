@@ -1,0 +1,27 @@
+services:
+ php:
+    image: php:8.2-apache
+    container_name: fitbooking_php
+    volumes:
+      - ./src:/var/www/html
+      - ./docker/apache/vhost.conf:/etc/apache2/sites-available/000-default.conf
+    depends_on:
+      - mysql
+    ports:
+      - "8080:80"
+      
+ mysql:
+      image: mysql:5.7
+      container_name: fitbooking_mysql
+      env_file:
+        - .env
+      restart: always
+      command: 
+      ports:
+        - "3306:3306"
+      volumes:
+        - mysql_data:/var/lib/mysql
+        - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  mysql_data:
