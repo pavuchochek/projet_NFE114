@@ -4,7 +4,7 @@ require("../utils/Response.php");
 require("../utils/JWT.php");
 switch($_SERVER['REQUEST_METHOD']) {
     case 'POST':    
-        require_once '../dao/authDAO.php';
+        require_once '../dao/AuthDAO.php';
         $data = json_decode(file_get_contents('php://input'), true);
 
         $email = $data['email'] ?? '';
