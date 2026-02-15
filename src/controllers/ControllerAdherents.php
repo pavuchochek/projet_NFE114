@@ -3,13 +3,30 @@ require_once '../models/Adherent.php';
 require_once '../dao/AdherentDAO.php';
 
 class ControllerAdherents {
-    public static function getAdherentById($id, $role) {
-        return AdherentDAO::getAdherentById($id);
+    public static function getAdherentById($id, $role, $userId): Adherent|bool|null
+    {
+        if ($role === 'adherent' && $id == $userId) {
+           return AdherentDAO::getAdherentProfile($id);
+        }
+        
+        return false;
     }
 
-    public static function getAdherentsByCoursId($cours_id, $role) {
-        return AdherentDAO::getAdherentsByCoursId($cours_id);
+    public static function getAdherentsByCoursId($cours_id, $role): bool|array
+    {
+        if ($role === 'coach' || $role === 'admin') {
+            return AdherentDAO::getAdherentsByCoursId($cours_id);
+        }
+        return false;
     }
 
+    public static function getAllAdherents($role): bool|array
+    {
+        if ($role === 'admin') {
+            return AdherentDAO::getAllAdherents();
+        } else {
+            return false;
+        }
+    }
 
 }

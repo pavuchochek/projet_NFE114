@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/JWT.php';
+require_once 'Response.php';
 
 function requireAuth(array $allowedRoles = []) {
     $headers = getallheaders();

@@ -4,8 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" href="/assets/css/login.css">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
 </head>
+
 <body>
+<div id="login_container">
     <h1>Login</h1>
     <form action="/api/auth.php" method="post" id="loginForm">
         <select name="role" required>
@@ -22,6 +27,7 @@
         <br>
         <button type="submit">Login</button>
     </form>
+</div>
     <script>
    document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();

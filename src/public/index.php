@@ -1,23 +1,20 @@
 <?php
 session_start();
-
-if(!isset($_SESSION['token'])) {
-    header('Location: login.html');
+if(!isset($_SESSION["token"])) {
+    header("Location: login.html");
     exit();
 }
 
-switch($_SESSION['role']) {
+switch ($_SESSION["role"]) {
     case 'adherent':
-        header('Location: adherent/dashboard.php');
+        require __DIR__ . '/../views/dashboard_adherent.php';
         break;
+
     case 'coach':
-        header('Location: coach/dashboard.php');
+        require __DIR__ . '/../views/dashboard_coach.php';
         break;
+
     case 'admin':
-        header('Location: admin/dashboard.php');
-        break;
-    default:
-        session_destroy();
-        header('Location: login.html');
+        require __DIR__ . '/../views/dashboard_admin.php';
         break;
 }

@@ -5,12 +5,9 @@ require_once '../controllers/ControllerCoachs.php';
 
 switch($_SERVER['REQUEST_METHOD']) {
     case 'GET':
-        $payload = requireAuth(['adherent', 'coach', 'admin']);
+        $payload = requireAuth(['coach', 'admin']);
         if(isset($_GET['id'])) {
-            $coachs = ControllerCoachs::getCoachById($_GET['id'], $payload->data->role);
-        }
-        elseif (isset($_GET["cours_id"])) {
-            $coachs = ControllerCoachs::getCoachsByCoursId($_GET['cours_id'], $payload->data->role);
+            $coachs = ControllerCoachs::getCoachById($_GET['id'], $payload->data->role, $payload->data->userId);
         }
         else {
             $coachs = ControllerCoachs::getAllCoachs($payload->data->role);

@@ -5,9 +5,7 @@ require_once '../models/Salle.php';
 require_once '../models/Database.php';
 
 class CoursDAO {
-    /*
-    * Recupere un cours par son id
-    */
+
     public static function getCoursById($id_cours) {
         $query = "SELECT c.*, co.*, s.* FROM cours c 
                   JOIN coach co ON c.id_coach = co.id_coach 
@@ -85,19 +83,22 @@ class CoursDAO {
         return $coursList;
     }
 
-    public static function getCoursById($id_cours) {
+    public static function getCoursByType(mixed $type)
+    {
         $query = "SELECT c.*, co.*, s.* FROM cours c 
                   JOIN coach co ON c.id_coach = co.id_coach 
                   JOIN salle s ON c.id_salle = s.id_salle
-                  WHERE c.id_cours = :id_cours";
+                  WHERE c.type_cours = :type_cours AND c.date_heure > NOW()";
         $stmt = Database::getInstance()->getConnection()->prepare($query);
-        $stmt->bindParam(':id_cours', $id_cours);
+        $stmt->bindParam(':type_cours', $type);
         $stmt->execute();
-        if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $coursList = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $coach = new Coach($row['id_coach'], $row['nom_coach'], $row['mail_coach']);
             $salle = new Salle($row['id_salle'], $row['nom_salle'], $row['capacite_salle']);
-            return new Cours($row['id_cours'], $row['nom_cours'], $row['description_cours'], $row['type_cours'], $coach, $salle, $row['date_heure'], $row['capacite_cours'], $row['duree_cours']);
+            $cours = new Cours($row['id_cours'], $row['nom_cours'], $row['description_cours'], $row['type_cours'], $coach, $salle, $row['date_heure'], $row['capacite_cours'], $row['duree_cours']);
+            $coursList[] = $cours;
         }
-        return null;
+        return $coursList;
     }
 }

@@ -22,6 +22,7 @@ switch($_SERVER['REQUEST_METHOD']) {
             session_start();
            
             $_SESSION["token"] = JWTService::generateToken($userId, $role);
+            $_SESSION["role"] = $role;
             
             Response::json(['success' => true, 'user_id' => $userId, 'token' => $_SESSION["token"]]);
         } else {

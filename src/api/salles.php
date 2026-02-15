@@ -5,12 +5,12 @@ require_once '../controllers/ControllerSalles.php';
 
 switch($_SERVER['REQUEST_METHOD']) {
     case 'GET':
-        $payload = requireAuth(['adherent', 'coach', 'admin']);
+        $payload = requireAuth(['admin']);
         if(isset($_GET['id'])) {
-            $salles = ControllerSalles::getSalleById($_GET['id'], $payload->data->role);
+            $salles = ControllerSalles::getSalleById($_GET['id']);
         }
         else {
-            $salles = ControllerSalles::getAllSalles($payload->data->role);
+            $salles = ControllerSalles::getAllSalles();
         }
         if ($salles !== false) {
             Response::json($salles);

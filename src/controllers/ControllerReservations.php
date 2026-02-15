@@ -17,4 +17,9 @@ class ControllerReservations {
     public static function annulerReservation($id, $userId) {
        return ReservationDAO::annulerReservation($id, $userId);
     }
+
+    public static function confirmerReservation(mixed $id, $user_id)
+    {
+        return ReservationDAO::confirmerReservation($id, $user_id);
+    }
 }

@@ -7,7 +7,7 @@ switch($_SERVER['REQUEST_METHOD']) {
     case 'GET':
         $payload = requireAuth(['adherent', 'coach', 'admin']);
         if(isset($_GET['id'])) {
-            $adherents = ControllerAdherents::getAdherentById($_GET['id'], $payload->data->role);
+            $adherents = ControllerAdherents::getAdherentById($_GET['id'], $payload->data->role, $payload->data->userId);
         }
         elseif (isset($_GET["cours_id"])) {
             $adherents = ControllerAdherents::getAdherentsByCoursId($_GET['cours_id'], $payload->data->role);

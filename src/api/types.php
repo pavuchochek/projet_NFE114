@@ -6,7 +6,7 @@ require_once '../utils/Response.php';
 switch($_SERVER['REQUEST_METHOD']) {
     case 'GET':
         $payload = requireAuth(['adherent', 'coach', 'admin']);
-        $config_json=file_get_contents('../config.json');
+        $config_json=file_get_contents('../config/config.json');
         Response::json(json_decode($config_json, true));
         break;
 

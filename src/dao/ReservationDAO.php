@@ -11,7 +11,7 @@ class ReservationDAO {
      */
     public static function getReservationsByAdherent($id_adherent) {
         $pdo = Database::getConnection();
-        $query = "SELECT p.* FROM participe p JOIN Cours c ON p.id_cours = c.id_cours WHERE p.id_adherent = :id_adherent AND c.date_heure > NOW()";
+        $query = "SELECT p.* FROM participe p JOIN cours c ON p.id_cours = c.id_cours WHERE p.id_adherent = :id_adherent AND c.date_heure > NOW()";
         $stmt = $pdo->prepare($query);
         $reservations = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -22,7 +22,7 @@ class ReservationDAO {
 
     public static function getReservationsPassedByAdherent($id_adherent) {
         $pdo = Database::getConnection();
-        $query = "SELECT p.* FROM participe p JOIN Cours c ON p.id_cours = c.id_cours WHERE p.id_adherent = :id_adherent AND c.date_heure <= NOW()";
+        $query = "SELECT p.* FROM participe p JOIN cours c ON p.id_cours = c.id_cours WHERE p.id_adherent = :id_adherent AND c.date_heure <= NOW()";
         $stmt = $pdo->prepare($query);
         $reservations = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -39,17 +39,31 @@ class ReservationDAO {
         return $pdo->lastInsertId();
     }
 
-    public static function cancelReservation($id_reservation) {
+    public static function annulerReservation($id_reservation) {
         $pdo = Database::getConnection();
         $query = "UPDATE participe SET statut = 'annulé' WHERE id_reservation = :id_reservation";
         $stmt = $pdo->prepare($query);
         return $stmt->execute(['id_reservation' => $id_reservation]);
     }
 
-    public static function confirmReservation($id_reservation) {
+    public static function confirmerReservation($id_reservation) {
         $pdo = Database::getConnection();
         $query = "UPDATE participe SET statut = 'confirmé' WHERE id_reservation = :id_reservation";
         $stmt = $pdo->prepare($query);
         return $stmt->execute(['id_reservation' => $id_reservation]);
     }
+
+    public static function getReservationById($id, $userId)
+    {
+        $pdo = Database::getConnection();
+        $query = "SELECT p.* FROM participe p JOIN cours c ON p.id_cours = c.id_cours WHERE p.id_reservation = :id AND p.id_adherent = :userId";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute(['id' => $id, 'userId' => $userId]);
+        if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            return new Reservation($row['id_reservation'], $row['id_adherent'], $row['id_coach'], $row['date_reservation']);
+        }
+        return null;
+    }
+
+
 }

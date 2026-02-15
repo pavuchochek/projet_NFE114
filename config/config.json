@@ -1,0 +1,18 @@
+{
+  "types": [
+    {
+      "id": "yoga",
+      "nom": "Yoga",
+      "couleur": "#8B7355",
+      "icone": "",
+      "description": "Séances de yoga pour tous niveaux"
+    },
+    {
+      "id": "cardio",
+      "nom": "Cardio",
+      "couleur": "#FF6B6B",
+      "icone": "",
+      "description": "Entraînement cardio intensif"
+    }
+  ]
+}

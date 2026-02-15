@@ -1,6 +1,6 @@
 <?php
 require('../models/Database.php');
-class AuthDTO  {
+class AuthDAO  {
 
     public static function login($email, $password, $role) {
         switch($role) {
@@ -42,8 +42,8 @@ class AuthDTO  {
     public static function loginAdmin($email, $password) {
         if($email === $_ENV['ADMIN_EMAIL'] && $password === $_ENV['ADMIN_PASSWORD']) {
             return $_ENV['ADMIN_ID'];
+        }
         return false;
-    }
     }
 }
 
