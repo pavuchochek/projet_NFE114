@@ -19,10 +19,9 @@ class JWTService {
         return FirebaseJWT::encode($payload, getenv('JWT_SECRET_KEY'), 'HS256');
     }
 
-    public static function validateToken($token) {
+    public static function verify($token) {
         try {
-            $decoded = FirebaseJWT::decode($token, new Key(getenv('JWT_SECRET_KEY'), 'HS256'));
-            return $decoded->data;
+            return FirebaseJWT::decode($token, new Key(getenv('JWT_SECRET_KEY'), 'HS256'));
         } catch (Exception $e) {
             return false;
         }

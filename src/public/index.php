@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(!isset($_SESSION["token"])) {
+if(!isset($_COOKIE["token"])) {
     header("Location: login.html");
     exit();
 }

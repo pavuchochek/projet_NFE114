@@ -1,8 +1,9 @@
 <?php
-require_once '../dao/reservationsDAO.php';
+require_once '../dao/ReservationDAO.php';
 
 class ControllerReservations {
-    public static function getAllReservations($userId) {
+    public static function getAllReservations($userId): array
+    {
         return ReservationDAO::getAllReservations($userId);
     }
 

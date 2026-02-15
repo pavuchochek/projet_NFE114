@@ -5,14 +5,29 @@ class ControllerCours {
     public static function getAllCours($role, $userId) {
         switch($role) {
             case 'adherent':
-                return self::getAllCoursForAdherent($userId);
+                $cours = self::getAllCoursForAdherent($userId);
+                break;
             case 'coach':
-                return self::getAllCoursForCoach($userId);
+                $cours = self::getAllCoursForCoach($userId);
+                break;
             case 'admin':
-                return self::getAllCoursForAdmin();
+                $cours = self::getAllCoursForAdmin();
+                break;
             default:
-                return false;
+                $cours = false;
+                break;
         }
+        if($cours !== false) {
+           $coursjson = [];
+           if (is_array($cours)) {
+              foreach($cours as $c) {
+                  $coursjson[] = $c->toJson();
+              }
+              } else {
+                  $coursjson = $cours->toJson();
+              }
+        }
+        return $coursjson;
     }
     
 

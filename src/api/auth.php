@@ -19,12 +19,28 @@ switch($_SERVER['REQUEST_METHOD']) {
         $userId = AuthDAO::login($email, $password, $role);
 
         if ($userId) {
+            $token = JWTService::generateToken($userId, $role);
+
             session_start();
-           
-            $_SESSION["token"] = JWTService::generateToken($userId, $role);
             $_SESSION["role"] = $role;
-            
-            Response::json(['success' => true, 'user_id' => $userId, 'token' => $_SESSION["token"]]);
+
+            setcookie(
+                "token",          // nom du cookie
+                $token,           // valeur
+                [
+                    'expires' => time() + 3600,  // 1 heure
+                    'path' => '/',               // accessible sur tout le site
+                    'secure' => true,            // uniquement HTTPS
+                    'httponly' => true,          // inaccessible via JS
+                    'samesite' => 'Lax'          // protection CSRF basique
+                ]
+            );
+
+            Response::json([
+                'success' => true,
+                'user_id' => $userId,
+                'token' => $token
+            ]);
         } else {
             Response::error('Invalid credentials', 401);
         }

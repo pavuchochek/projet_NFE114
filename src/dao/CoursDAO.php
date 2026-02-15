@@ -24,23 +24,36 @@ class CoursDAO {
     /**
      * Recupere tous les cours disponibles non réservés pour un adhérent donné qui ne sont pas passés
      */
-    public static function getAllCoursForAdherent($id_adherent) {
-        $query = "SELECT c.*, co.*, s.* FROM cours c 
-                  JOIN coach co ON c.id_coach = co.id_coach 
-                  JOIN salle s ON c.id_salle = s.id_salle
-                  WHERE c.id_cours NOT IN (SELECT id_cours FROM reservation WHERE id_adherent = :id_adherent AND statut = 'confirmé')"
-                  . " AND c.date_heure > NOW()";
+    public static function getAllCoursForAdherent($id_adherent): array
+    {
+        $query = "SELECT 
+            c.id_cours AS c_id, c.nom AS c_nom, c.description AS c_description, c.type AS c_type, c.date_cours AS c_date, c.capacite_max AS c_capacite, c.duree AS c_duree,
+            co.id_coach AS co_id, co.nom AS co_nom, co.prenom AS co_prenom, co.mail AS co_mail,
+            s.id_salle AS s_id, s.nom AS s_nom, s.capacite_max AS s_capacite
+          FROM cours c 
+          JOIN coach co ON c.id_coach = co.id_coach 
+          JOIN salle s ON c.id_salle = s.id_salle
+          WHERE c.id_cours NOT IN (
+              SELECT id_cours 
+              FROM participe 
+              WHERE id_adherent = :id_adherent AND statut = 'confirmé'
+          ) 
+          AND c.date_cours > NOW()";
+
         $stmt = Database::getInstance()->getConnection()->prepare($query);
-        $stmt->bindParam(':id_adherent', $id_adherent);
+        $stmt->bindParam(':id_adherent', $id_adherent, PDO::PARAM_INT);
         $stmt->execute();
+
         $coursList = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $coach = new Coach($row['id_coach'], $row['nom_coach'], $row['mail_coach']);
-            $salle = new Salle($row['id_salle'], $row['nom_salle'], $row['capacite_salle']);
-            $cours = new Cours($row['id_cours'], $row['nom_cours'], $row['description_cours'], $row['type_cours'], $coach, $salle, $row['date_heure'], $row['capacite_cours'], $row['duree_cours']);
+            $coach = new Coach($row['co_id'], $row['co_nom'], $row['co_prenom'], $row['co_mail']);
+            $salle = new Salle($row['s_id'], $row['s_nom'], $row['s_capacite']);
+            $cours = new Cours($row['c_id'], $row['c_nom'], $row['c_description'], $row['c_type'], $coach, $salle, $row['c_date'], $row['c_capacite'], $row['c_duree']);
             $coursList[] = $cours;
         }
+
         return $coursList;
+
     }
 
     /**

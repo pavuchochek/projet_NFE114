@@ -9,7 +9,7 @@ class ReservationDAO {
     /**
      * Recupere les reservations d'un adherent actuelles (non passées) avec les infos du cours associé
      */
-    public static function getReservationsByAdherent($id_adherent) {
+    public static function getAllReservations($id_adherent) {
         $pdo = Database::getConnection();
         $query = "SELECT p.* FROM participe p JOIN cours c ON p.id_cours = c.id_cours WHERE p.id_adherent = :id_adherent AND c.date_heure > NOW()";
         $stmt = $pdo->prepare($query);

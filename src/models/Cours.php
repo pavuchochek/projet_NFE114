@@ -2,7 +2,7 @@
 require_once 'Coach.php';
 require_once 'Salle.php';
 
-public class Cours {
+class Cours {
     private $id_cours;
     private $nom;
     private $description;
