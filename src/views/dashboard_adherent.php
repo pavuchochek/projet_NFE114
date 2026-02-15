@@ -11,7 +11,7 @@
 
 <div id="dashboard">
     <h1>Bienvenue, Adhérent</h1>
-
+    <button id="logout_btn" style="position:absolute; top:10px; right:10px;">Déconnexion</button>
     <div id="cours_disponibles">
         <h2>Cours disponibles</h2>
         <ul id="cours_list"></ul>
@@ -24,5 +24,6 @@
 </div>
 
 <script src="/assets/js/dashboard_adherent.js" defer></script>
+<script src="/assets/js/general.js" defer></script>
 </body>
 </html>

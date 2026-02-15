@@ -1,12 +1,8 @@
-console.log('[Dashboard] Script chargé');
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('[Dashboard] DOM prêt');
-
     loadCours();
     loadReservations();
 });
-
 /**
  * Fetch des cours disponibles
  */
@@ -70,6 +66,7 @@ function renderCours(cours) {
         const li = document.createElement('li');
         li.className = 'cours';
         console.log('[Cours] Rendu du cours', c.nom);
+        const realHours = convertDecimalHoursToHumanReadable(c.duree);
 
         li.innerHTML = `
         <h3>${c.nom}</h3>
@@ -77,6 +74,7 @@ function renderCours(cours) {
         <p><strong>${c.date_heure ?? ''}</strong></p>
         <p>Coach: ${c.coach.nom} ${c.coach.prenom}</p>
         <p>Salle: ${c.salle.nom}</p>
+        <p>Duree:  ${realHours} </p>
         <div class="card-actions">
             <button data-id="${c.id_cours}">Réserver</button>
         </div>
@@ -119,4 +117,16 @@ function renderReservations(reservations) {
     });
 
     console.log('[Réservations] Rendu terminé');
+}
+
+function convertDecimalHoursToHumanReadable(decimalHours) {
+    const hours = Math.floor(decimalHours);
+    const minutes = Math.round((decimalHours - hours) * 60);
+    var result = `${hours}h ${minutes}m`;
+    if (hours === 0) {
+        result = `${minutes}m`;
+    }else if (minutes === 0) {
+        result = `${hours}h`;
+    }
+    return result;
 }

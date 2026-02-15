@@ -12,6 +12,7 @@
 
 <div id="dashboard">
     <h1>Bienvenue, Admin</h1>
+    <button id="logout_btn" style="position:absolute; top:10px; right:10px;">Déconnexion</button>
     <div id="stats">
             <h2>Statistiques</h2>
             <p>Total des adhérents : <span id="total_adherents"></span></p>
@@ -21,5 +22,6 @@
 </div>
 
 <script src="/assets/js/dashboard_admin.js" defer></script>
+<script src="/assets/js/general.js" defer></script>
 </body>
 </html>
