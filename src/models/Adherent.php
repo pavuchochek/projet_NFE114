@@ -9,6 +9,8 @@ class Adherent{
     private $ddn;
     private $date_adherence;
 
+    private $statut_participation;
+
     public function __construct($id_adherent, $nom, $prenom, $email) {
         $this->id_adherent = $id_adherent;
         $this->nom = $nom;
@@ -37,6 +39,10 @@ class Adherent{
         return $this->mot_de_passe;
     }
 
+    public function setStatutParticipation($statut) {
+        $this->statut_participation = $statut;
+    }
+
     public function toJsonForCours() {
         return [
             'id_adherent' => $this->id_adherent,
@@ -47,11 +53,15 @@ class Adherent{
 
     public function toArrayForCours(): array
     {
-        return [
+        $data = [
             'id_adherent' => $this->id_adherent,
             'nom' => $this->nom,
             'prenom' => $this->prenom
         ];
+        if (isset($this->statut_participation)) {
+            $data['statut_participation'] = $this->statut_participation;
+        }
+        return $data;
     }
 
     public function toJson() {

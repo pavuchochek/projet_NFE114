@@ -78,7 +78,7 @@ function renderCours(cours) {
         btn.addEventListener('click', async (e) => {
             const coursId = btn.dataset.coursId;
 
-            modal.style.display = 'flex';
+            modal.classList.add('active');
 
             const listEl = document.getElementById('participants-list');
             listEl.innerHTML = '<li>Chargement...</li>';
@@ -95,7 +95,7 @@ function renderCours(cours) {
                 } else {
                     data.forEach(p => {
                         const li = document.createElement('li');
-                        li.textContent = `${p.nom} ${p.prenom} (${p.statut})`;
+                        li.textContent = `${p.nom} ${p.prenom} (${p.statut_participation})`;
                         listEl.appendChild(li);
                     });
                 }
@@ -138,30 +138,23 @@ function renderProfil(profil) {
 
 function createPopupParticipants()
 {
-    // 1. Création de la modal dans le DOM
     modal = document.createElement('div');
     modal.id = 'participants-modal';
-    modal.style.display = 'none'; // caché au départ
-    modal.style.position = 'fixed';
-    modal.style.top = '0';
-    modal.style.left = '0';
-    modal.style.width = '100%';
-    modal.style.height = '100%';
-    modal.style.backgroundColor = 'rgba(0,0,0,0.5)';
-    modal.style.justifyContent = 'center';
-    modal.style.alignItems = 'center';
-    modal.style.zIndex = '1000';
+    modal.classList.add('modal');
+
     modal.innerHTML = `
-    <div style="background:#fff; padding:20px; border-radius:8px; max-width:500px; width:90%;">
+    <div class="modal-content">
+        <button class="modal-close" aria-label="Fermer">&times;</button>
         <h3>Participants</h3>
         <ul id="participants-list"></ul>
-        <button id="close-participants">Fermer</button>
     </div>
 `;
+
     document.body.appendChild(modal);
 
-    document.getElementById('close-participants').addEventListener('click', () => {
-        modal.style.display = 'none';
+    modal.querySelector('.modal-close').addEventListener('click', () => {
+        modal.classList.remove('active');
         document.getElementById('participants-list').innerHTML = '';
     });
+
 }

@@ -15,7 +15,14 @@ class ControllerAdherents {
     public static function getAdherentsByCoursId($cours_id, $role): bool|array
     {
         if ($role === 'coach' || $role === 'admin') {
-            return AdherentDAO::getAdherentsByCoursId($cours_id);
+            $adherents = AdherentDAO::getAdherentsByCoursId($cours_id);
+            if ($adherents) {
+                $adherentsArray = [];
+                foreach ($adherents as $adherent) {
+                    $adherentsArray[] = $adherent->toArrayForCours();
+                }
+                return $adherentsArray;
+            }
         }
         return false;
     }

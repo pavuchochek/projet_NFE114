@@ -207,18 +207,106 @@ body {
 }
 .participants-btn {
     margin-top: 15px;
-}
-
-.participants-btn button {
-    padding: 8px 12px;
+    padding: 10px 14px;
     border: none;
-    border-radius: 6px;
-    background-color: #2d7ff9;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #2d7ff9, #1f66d1);
     color: #fff;
     cursor: pointer;
     font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
 }
 
-.participants-btn button:hover {
-    background-color: #1f66d1;
+.participants-btn:hover {
+    background: linear-gradient(135deg, #1f66d1, #1553ad);
+    transform: translateY(-1px);
+}
+
+.participants-btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* Overlay */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+/* Visible */
+.modal.active {
+    display: flex;
+}
+
+/* Contenu */
+.modal-content {
+    position: relative;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    width: 90%;
+    max-width: 480px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    animation: modalFadeIn 0.2s ease-out;
+}
+
+/* Titre */
+.modal-content h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+/* Liste */
+#participants-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#participants-list li {
+    padding: 10px 12px;
+    border-bottom: 1px solid #eee;
+    font-size: 0.95rem;
+}
+
+#participants-list li:last-child {
+    border-bottom: none;
+}
+
+/* Bouton X */
+.modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    line-height: 1;
+    cursor: pointer;
+    color: #888;
+    transition: color 0.2s ease;
+}
+
+.modal-close:hover {
+    color: #000;
+}
+
+/* Animation */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

@@ -46,11 +46,18 @@ class AdherentDAO {
 
     public static function getAdherentsByCoursId($id_cours) {
         $pdo = Database::getConnection();
-        $stmt = $pdo->prepare("SELECT a.* FROM adherent a JOIN participe i ON a.id_adherent = i.id_adherent WHERE i.id_cours = :id_cours");
+        $stmt = $pdo->prepare("SELECT a.id_adherent, a.nom, a.prenom, a.mail,
+                                i.statut
+                                FROM adherent a 
+                                JOIN participe i ON a.id_adherent = i.id_adherent 
+                                WHERE i.id_cours = :id_cours");
         $stmt->execute(['id_cours' => $id_cours]);
         $adherents = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $adherents[] = new Adherent($row['id_adherent'], $row['nom'], $row['prenom'], $row['email']);
+            $adherent = new Adherent($row['id_adherent'], $row['nom'], $row['prenom'], $row['mail']);
+            $adherent->setStatutParticipation($row['statut']);
+            $adherents[] = $adherent;
+
         }
         return $adherents;
     }
