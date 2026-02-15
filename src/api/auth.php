@@ -1,8 +1,10 @@
 <?php
+require "../vendor/autoload.php";
 require("../utils/Response.php");
+require("../utils/JWT.php");
 switch($_SERVER['REQUEST_METHOD']) {
     case 'POST':    
-        require_once '../sql/dto/authDTO.php';
+        require_once '../dao/authDAO.php';
         $data = json_decode(file_get_contents('php://input'), true);
 
         $email = $data['email'] ?? '';
@@ -14,14 +16,14 @@ switch($_SERVER['REQUEST_METHOD']) {
             exit();
         }
         
-        $userId = AuthDTO::login($email, $password, $role);
+        $userId = AuthDAO::login($email, $password, $role);
 
         if ($userId) {
             session_start();
-            $_SESSION['user_id'] = $userId;
-            $_SESSION['role'] = $role;
+           
+            $_SESSION["token"] = JWTService::generateToken($userId, $role);
             
-            Response::json(['success' => true, 'user_id' => $userId]);
+            Response::json(['success' => true, 'user_id' => $userId, 'token' => $_SESSION["token"]]);
         } else {
             Response::error('Invalid credentials', 401);
         }

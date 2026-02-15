@@ -4,11 +4,11 @@ class AuthDTO  {
 
     public static function login($email, $password, $role) {
         switch($role) {
-            case 'Adherent':
+            case 'adherent':
                 return self::loginAdherent($email, $password);
-            case 'Coach':
+            case 'coach':
                 return self::loginCoach($email, $password);
-            case 'Admin':
+            case 'admin':
                 return self::loginAdmin($email, $password);
             default:
                 return false;

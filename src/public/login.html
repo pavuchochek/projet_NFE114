@@ -23,20 +23,32 @@
         <button type="submit">Login</button>
     </form>
     <script>
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-        const response = await fetch('/api/auth.php', {
-            method: 'POST',
-            body: formData
-        });
-        const data = await response.json();
-        if(data.error) {
-            alert(data.error);
-        } else {
-            window.location.href = '/index.php';
-        }
+   document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const payload = {
+        email: e.target.email.value,
+        password: e.target.password.value,
+        role: e.target.role.value
+    };
+
+    const response = await fetch('/api/auth.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
     });
+
+    const data = await response.json();
+
+    if (data.error) {
+        alert(data.error);
+    } else {
+        window.location.href = '/index.php';
+    }
+});
+
     </script>
 </body>
 </html>

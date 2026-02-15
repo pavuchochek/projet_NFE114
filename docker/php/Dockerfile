@@ -1,4 +1,19 @@
 FROM php:8.2-apache
-# Install MYSQL PDO
-RUN apt-get update && apt-get install -y libonig-dev libzip-dev default-mysql-client \
-    && docker-php-ext-install pdo pdo_mysql mysqli
+
+RUN apt-get update && apt-get install -y \
+        unzip \
+        git \
+        curl \
+        libzip-dev \
+        libonig-dev \
+        default-mysql-client \
+    && docker-php-ext-install pdo pdo_mysql mysqli zip \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+WORKDIR /var/www/html
+
+RUN a2enmod rewrite
+
+EXPOSE 80
