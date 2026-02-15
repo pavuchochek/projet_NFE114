@@ -13,11 +13,33 @@
 <div id="dashboard">
     <h1>Bienvenue, Admin</h1>
     <button id="logout_btn" style="position:absolute; top:10px; right:10px;">Déconnexion</button>
-    <div id="stats">
-            <h2>Statistiques</h2>
-            <p>Total des adhérents : <span id="total_adherents"></span></p>
-            <p>Total des coachs : <span id="total_coachs"></span></p>
-            <p>Total des cours : <span id="total_cours"></span></p>
+    <div id="admin-dashboard">
+
+        <section id="stats-cours" class="stats-section theme-blue" >
+            <h2>Cours</h2>
+            <div class="stats-grid" id="cours-container"></div>
+        </section>
+
+        <section id="stats-coachs" class="stats-section theme-green">
+            <h2>Coachs</h2>
+            <div class="stats-grid" id="coachs-container"></div>
+        </section>
+
+        <section id="stats-adherents" class="stats-section theme-purple">
+            <h2>Adhérents</h2>
+            <div class="stats-grid" id="adherents-container"></div>
+        </section>
+
+        <section id="stats-salles" class="stats-section theme-orange">
+            <h2>Salles</h2>
+            <div class="stats-grid" id="salles-container"></div>
+        </section>
+
+        <section id="stats-prix" class="stats-section  theme-red">
+            <h2>Paiements coachs</h2>
+            <div id="prix-container"></div>
+        </section>
+
     </div>
 </div>
 

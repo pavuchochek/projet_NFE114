@@ -1,5 +1,5 @@
 <?php
-
+require_once("../dao/SalleDAO.php");
 class ControllerSalles
 {
 
@@ -10,6 +10,14 @@ class ControllerSalles
 
     public static function getAllSalles(): array
     {
-        return SalleDAO::getAllSalles();
+        $salles = SalleDAO::getAllSalles();
+        if($salles) {
+            $sallesArray = [];
+            foreach ($salles as $salle) {
+                $sallesArray[] = $salle->toArray();
+            }
+            return $sallesArray;
+        }
+        return [];
     }
 }

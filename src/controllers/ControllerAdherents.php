@@ -30,7 +30,14 @@ class ControllerAdherents {
     public static function getAllAdherents($role): bool|array
     {
         if ($role === 'admin') {
-            return AdherentDAO::getAllAdherents();
+            $adherents = AdherentDAO::getAllAdherents();
+            if($adherents) {
+                $adherentsArray = [];
+                foreach ($adherents as $adherent) {
+                    $adherentsArray[] = $adherent->toArray();
+                }
+                return $adherentsArray;
+            }
         } else {
             return false;
         }

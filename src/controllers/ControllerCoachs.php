@@ -14,7 +14,14 @@ class ControllerCoachs
     public static function getAllCoachs($role)
     {
         if($role=="admin") {
-            return CoachDAO::getAllCoachs();
+            $coachs = CoachDAO::getAllCoachs();
+            if($coachs) {
+                $coachsArray = [];
+                foreach ($coachs as $coach) {
+                    $coachsArray[] = $coach->toArray();
+                }
+                return $coachsArray;
+            }
         }
 
         return false;

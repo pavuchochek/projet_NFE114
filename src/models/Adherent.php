@@ -64,6 +64,18 @@ class Adherent{
         return $data;
     }
 
+    public function toArray() {
+        return [
+            'id_adherent' => $this->id_adherent,
+            'nom' => $this->nom,
+            'prenom' => $this->prenom,
+            'email' => $this->email,
+            'telephone' => $this->telephone,
+            'ddn' => $this->ddn,
+            'date_adherence' => $this->date_adherence
+        ];
+    }
+
     public function toJson() {
         return [
             'id_adherent' => $this->id_adherent,

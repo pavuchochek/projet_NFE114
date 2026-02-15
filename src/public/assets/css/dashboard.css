@@ -310,3 +310,65 @@ body {
         transform: translateY(0);
     }
 }
+.stats-section {
+    margin-bottom: 32px;
+}
+
+.stats-section h2 {
+    margin-bottom: 16px;
+    font-size: 1.3rem;
+}
+
+/* Grille */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+/* Carte générique */
+.stat-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    border-left: 6px solid transparent;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+}
+
+.stat-card h3 {
+    margin: 0 0 8px;
+    font-size: 1.05rem;
+}
+
+.stat-card p {
+    margin: 4px 0;
+    font-size: 0.9rem;
+    color: #444;
+}
+.theme-blue .stat-card {
+    border-left-color: #2d7ff9;
+}
+
+.theme-green .stat-card {
+    border-left-color: #2ecc71;
+}
+.theme-purple .stat-card {
+    border-left-color: #9b59b6;
+}
+.theme-orange .stat-card {
+    border-left-color: #e67e22;
+}
+
+.theme-red .stat-card {
+    border-left-color: #e74c3c;
+}
+
+.theme-red .stat-card strong {
+    font-size: 1.1rem;
+}

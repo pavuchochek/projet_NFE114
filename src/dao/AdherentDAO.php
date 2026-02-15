@@ -23,7 +23,12 @@ class AdherentDAO {
         $stmt = $pdo->query("SELECT * FROM adherent");
         $adherents = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $adherents[] = new Adherent($row['id_adherent'], $row['nom'], $row['prenom'], $row['email']);
+            $adherent = new Adherent($row['id_adherent'], $row['nom'], $row['prenom'], $row['mail']);
+            $adherent->setTelephone($row['telephone']);
+            $adherent->setDdn($row['ddn']);
+            $adherent->setDateAdherence($row['date_adherence']);
+            $adherents[] = $adherent;
+
         }
         return $adherents;
     }

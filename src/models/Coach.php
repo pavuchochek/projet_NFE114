@@ -36,18 +36,18 @@ class Coach {
         return $this->email;
     }
 
-    public function toJsonForCours() {
-        return [
-            'id_coach' => $this->id_coach,
-            'nom' => $this->nom,
-            'prenom' => $this->prenom
-        ];
+    public function setTelephone($telephone) {
+        $this->telephone = $telephone;
     }
 
-    public function toJson() {
-        $json = $this->toJson();
-        return json_encode($json);
+    public function setDdn($ddn) {
+        $this->ddn = $ddn;
     }
+
+    public function setPrix($prix_heure) {
+        $this->prix_heure = $prix_heure;
+    }
+
     public function toArray(): array
     {
         return [

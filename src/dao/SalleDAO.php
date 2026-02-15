@@ -9,7 +9,7 @@ class SalleDAO {
         $stmt->execute();
         $salles = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $salles[] = new Salle($row['id_salle'], $row['nom'], $row['capacite']);
+            $salles[] = new Salle($row['id_salle'], $row['nom'], $row['capacite_max']);
         }
         return $salles;
     }
