@@ -160,3 +160,48 @@ body {
     width: 90px;
     display: inline-block;
 }
+
+.button-confirm-reservation {
+    background-color: #28a745; /* vert principal */
+    color: #fff;               /* texte blanc */
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+.button-confirm-reservation:hover {
+    background-color: #218838; /* vert plus foncé au hover */
+    transform: translateY(-1px);
+}
+
+.button-confirm-reservation:active {
+    background-color: #1e7e34; /* vert encore plus foncé au clic */
+    transform: translateY(0);
+}
+.button-cancel-reservation {
+    background-color: #dc3545; /* rouge principal */
+    color: #fff;               /* texte blanc */
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+.button-cancel-reservation:hover {
+    background-color: #c82333; /* rouge plus foncé au hover */
+    transform: translateY(-1px);
+}
+
+.button-cancel-reservation:active {
+    background-color: #bd2130; /* rouge encore plus foncé au clic */
+    transform: translateY(0);
+}

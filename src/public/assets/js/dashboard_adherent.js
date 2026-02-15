@@ -112,6 +112,7 @@ function renderCours(cours) {
 
         li.querySelector('button').addEventListener('click', () => {
             console.log('[Cours] Réservation demandée pour', c.id_cours);
+            reserverCours(c.id_cours);
         });
 
         list.appendChild(li);
@@ -168,7 +169,8 @@ function renderReservations(reservations) {
 
         let actionsHTML = '';
         if (r.statut === 'en attente') {
-            actionsHTML = `<button data-id="${r.cours.id_cours}">Confirmer</button>`;
+            actionsHTML = `<button data-id="${r.cours.id_cours}" class="button-confirm-reservation">Confirmer</button>`;
+            actionsHTML = actionsHTML+ '<button data-id="${r.cours.id_cours}" class="button-cancel-reservation">Annuler</button>';
         }
 
         li.innerHTML = `
@@ -183,13 +185,21 @@ function renderReservations(reservations) {
         </div>
     `;
 
-        // Ajouter l'écouteur si le bouton existe
         const btn = li.querySelector('button');
         if (btn) {
             btn.addEventListener('click', () => {
                 console.log('[Réservation] Confirmer cours', r.cours.id_cours);
                 confirmReservation(r.cours.id_cours);
             });
+        }
+
+        const cancelBtn = li.querySelector('.button-cancel-reservation');
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', () => {
+                console.log('[Réservation] Annuler cours', r.cours.id_cours);
+                cancelReservation(r.cours.id_cours);
+            }
+            );
         }
 
         list.appendChild(li);
@@ -229,7 +239,7 @@ function renderProfil(profil) {
 function confirmReservation(coursId) {
     console.log('[Réservation] Confirmation demandée pour le cours', coursId);
     var userId = getCookie('user_id');
-    fetch('/api/reservation.php', {
+    fetch('/api/reservations.php', {
         method: 'PATCH',
         credentials: 'include',
         headers: {
@@ -237,8 +247,7 @@ function confirmReservation(coursId) {
         }
         ,
         body: JSON.stringify({
-            id_cours: coursId,
-            id_adherent: userId
+            cours_id: coursId
         })
     }).then(response => {
         if (response.ok) {
@@ -248,6 +257,47 @@ function confirmReservation(coursId) {
     }).catch(error => {
         console.error('[Réservation] Erreur lors de la confirmation', error);
     });
+}
+
+function cancelReservation(coursId) {
+    console.log('[Réservation] Annulation demandée pour le cours', coursId);
+    var userId = getCookie('user_id');
+    fetch('/api/reservations.php?id='+coursId, {
+        method: 'DELETE',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    } ).then(response => {
+        if (response.ok) {
+            console.log('[Réservation] Annulation réussie');
+            loadCours()
+            loadReservations() // Recharger les réservations pour mettre à jour l'affichage
+        }
+    }).catch(error => {
+        console.error('[Réservation] Erreur lors de l\'annulation', error);
+    });
+}
+
+function reserverCours(coursId) {
+    console.log('[Cours] Réservation demandée pour le cours', coursId);
+    fetch('/api/reservations.php', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+        ,
+        body: JSON.stringify({
+            cours_id: coursId
+        })
+    }).then(response => {
+        if (response.ok) {
+            console.log('[Cours] Réservation réussie');
+            loadCours()
+            loadReservations() // Recharger les réservations pour mettre à jour l'affichage
+        }
+        });
 }
 
 function convertDecimalHoursToHumanReadable(decimalHours) {

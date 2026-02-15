@@ -40,7 +40,7 @@ class CoursDAO {
           WHERE c.id_cours NOT IN (
               SELECT id_cours 
               FROM participe 
-              WHERE id_adherent = :id_adherent AND statut = 'confirmé'
+              WHERE id_adherent = :id_adherent
           ) 
           AND c.date_cours > NOW()";
 
@@ -140,5 +140,20 @@ class CoursDAO {
             $coursList[] = $cours;
         }
         return $coursList;
+    }
+
+    public static function getNbPlaces($coursId)
+    {
+        //get All reservations for a cours
+        $nbReservations = ReservationDAO::getNbReservationsByCoursId($coursId);
+        //get capacite max for a cours
+        $query = "SELECT capacite_max as capacite_max FROM cours WHERE id_cours = :coursId";
+        $stmt = Database::getInstance()->getConnection()->prepare($query);
+        $stmt->bindParam(':coursId', $coursId);
+        $stmt->execute();
+        if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $capaciteMax = $row['capacite_max'];
+            return $capaciteMax - $nbReservations;
+        }
     }
 }

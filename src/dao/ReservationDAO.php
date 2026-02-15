@@ -33,23 +33,36 @@ class ReservationDAO {
 
     public static function createReservation($id_adherent, $id_cours) {
         $pdo = Database::getConnection();
-        $stmt = $pdo->prepare("INSERT INTO participe (id_adherent, id_cours, date_reservation, statut) VALUES (:id_adherent, :id_cours, NOW(), 'en attente')");
+        $stmt = $pdo->prepare("
+        INSERT INTO participe (id_adherent, id_cours, date_reservation, statut) 
+        VALUES (:id_adherent, :id_cours, NOW(), 'en attente')
+    ");
         $stmt->execute(['id_adherent' => $id_adherent, 'id_cours' => $id_cours]);
-        return $pdo->lastInsertId();
+
+        // retourne un tableau représentant la réservation
+        return [
+            'id_adherent' => $id_adherent,
+            'id_cours' => $id_cours,
+            'date_reservation' => date('Y-m-d H:i:s'),
+            'statut' => 'en attente'
+        ];
     }
 
-    public static function annulerReservation($id_reservation) {
+
+    public static function annulerReservation($cours_id, $adherent_id) {
         $pdo = Database::getConnection();
-        $query = "UPDATE participe SET statut = 'annulé' WHERE id_reservation = :id_reservation";
+        $query = "DELETE FROM participe WHERE id_cours = :cours_id AND id_adherent = :adherent_id";
         $stmt = $pdo->prepare($query);
-        return $stmt->execute(['id_reservation' => $id_reservation]);
+        return $stmt->execute(['cours_id' => $cours_id, 'adherent_id' => $adherent_id]);
     }
 
-    public static function confirmerReservation($id_reservation) {
+    public static function confirmerReservation($id_cours, $adherent_id) {
         $pdo = Database::getConnection();
-        $query = "UPDATE participe SET statut = 'confirmé' WHERE id_reservation = :id_reservation";
+        $query = "UPDATE participe SET statut = 'confirmé' WHERE id_cours = :id_cours AND id_adherent = :adherent_id";
         $stmt = $pdo->prepare($query);
-        return $stmt->execute(['id_reservation' => $id_reservation]);
+        $stmt->bindValue(':id_cours', $id_cours);
+        $stmt->bindValue(':adherent_id', $adherent_id);
+        return $stmt->execute();
     }
 
     public static function getReservationById($id, $userId)
@@ -78,6 +91,18 @@ class ReservationDAO {
             return $row['statut'];
         }
         return null;
+    }
+
+    public static function getNbReservationsByCoursId($id_cours)
+    {
+        $pdo = Database::getConnection();
+        $query = "SELECT COUNT(*) as nb_reservations FROM participe WHERE id_cours = :id_cours AND statut IN ('en attente', 'confirmé')";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute(['id_cours' => $id_cours]);
+        if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            return $row['nb_reservations'];
+        }
+        return 0;
     }
 
 }

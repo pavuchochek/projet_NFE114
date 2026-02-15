@@ -17,7 +17,7 @@ switch($_SERVER['REQUEST_METHOD']) {
     case 'POST':
         $payload = requireAuth(['adherent']);
         $data = json_decode(file_get_contents('php://input'), true);
-        $result = ControllerReservations::createReservation($data, $payload->data->userId);
+        $result = ControllerReservations::createReservation($data["cours_id"], $payload->data->userId);
         if ($result) {
             Response::json(['success' => true], 201);
         } else {
@@ -27,12 +27,12 @@ switch($_SERVER['REQUEST_METHOD']) {
 
     case 'DELETE':
         $payload = requireAuth(['adherent']);
-        $id = $_GET['id'] ?? null;
-        if (!$id) {
+        $coursId = $_GET['id'] ?? null;
+        if (!$coursId) {
             Response::error('Reservation ID is required', 400);
             exit();
         }
-        $result = ControllerReservations::annulerReservation($id, $payload->data->userId);
+        $result = ControllerReservations::annulerReservation($coursId, $payload->data->userId);
         if ($result) {
             Response::json(['success' => true]);
         } else {
@@ -42,13 +42,8 @@ switch($_SERVER['REQUEST_METHOD']) {
 
     case "PATCH":
         $payload = requireAuth(['adherent']);
-        $id = $_GET['id'] ?? null;
-        if (!$id) {
-            Response::error('Reservation ID is required', 400);
-            exit();
-        }
         $data = json_decode(file_get_contents('php://input'), true);
-        $result = ControllerReservations::confirmerReservation($id, $payload->data->userId);
+        $result = ControllerReservations::confirmerReservation($data["cours_id"], $payload->data->userId);
         if ($result) {
             Response::json(['success' => true]);
         } else {

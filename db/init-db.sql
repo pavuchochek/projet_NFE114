@@ -93,4 +93,4 @@ INSERT INTO cours (nom, description, type, date_cours, duree, capacite_max, id_s
 INSERT INTO participe (id_adherent, id_cours, date_reservation, statut) VALUES
 (1, 1, NOW(), 'en attente'),
 (1, 3, '2025-03-01 19:00:00', 'confirmé'),
-(2, 2, NOW(), 'annulé');
+(2, 2, NOW(), 'en attente');
