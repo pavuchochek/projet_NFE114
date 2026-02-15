@@ -1,5 +1,7 @@
 import { getCookie, convertDecimalHoursToHumanReadable } from './utils.js'
+let typesCoursMap = {};
 document.addEventListener('DOMContentLoaded', () => {
+    loadTypesCours();
     loadCours();
     loadReservations();
     loadHistory();
@@ -8,24 +10,76 @@ document.addEventListener('DOMContentLoaded', () => {
 /**
  * Fetch des cours disponibles
  */
-async function loadCours() {
-    console.log('[Cours] Fetch démarré');
-
+async function loadCours(typeId = '') {
     try {
-        const response = await fetch('/api/cours.php', {
-            credentials: 'include'
-        });
+        let url = '/api/cours.php';
 
-        console.log('[Cours] Réponse reçue', response.status);
+        if (typeId) {
+            url += `?type_id=${typeId}`;
+        }
 
-        const data = await response.json();
+        const res = await fetch(url, { credentials: 'include' });
+        const cours = await res.json();
 
-        renderCours(data);
-    } catch (error) {
-        console.error('[Cours] Erreur', error);
+        if (!Array.isArray(cours)) {
+            console.error('[Cours] Format invalide', cours);
+            return;
+        }
+
+        const container = document.getElementById('cours_list');
+        container.innerHTML = '';
+
+        if (cours.length === 0) {
+            container.innerHTML = '<p>Aucun cours pour ce type</p>';
+            return;
+        }
+
+        renderCours(cours);
+
+    } catch (err) {
+        console.error('[Cours] Erreur fetch', err);
     }
 }
 
+async function loadTypesCours() {
+    console.log('[Types de cours] Fetch démarré');
+
+    try {
+        const response = await fetch('/api/types.php', {
+            credentials: 'include'
+        });
+
+        console.log('[Types de cours] Réponse reçue', response.status);
+
+        const data = await response.json();
+        const types = data.types;
+
+        const select = document.getElementById('type_cours');
+        //option par defaut
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = 'Filtrer par type de cours';
+        select.appendChild(defaultOption);
+        types.forEach(type => {
+            const option = document.createElement('option');
+            option.value = type.id;
+            option.textContent = type.nom;
+            select.appendChild(option);
+        }
+        );
+        document.getElementById('type_cours').addEventListener('change', (e) => {
+            const typeId = e.target.value;
+            if(typeId === ''){
+                loadCours();
+                return;
+            }
+            loadCours(typeId);
+        });
+
+    } catch (error) {
+        console.error('[Types de cours] Erreur', error);
+    }
+}
 async function loadProfil() {
     console.log('[Profil] Fetch démarré');
     const userId = getCookie('user_id');
@@ -91,32 +145,36 @@ function renderCours(cours) {
         list.innerHTML = '<p>Aucun cours disponible</p>';
         return;
     }
-
     cours.forEach(c => {
         const li = document.createElement('li');
         li.className = 'cours';
-        console.log('[Cours] Rendu du cours', c.nom);
+
         const realHours = convertDecimalHoursToHumanReadable(c.duree);
 
+
         li.innerHTML = `
-        <h3>${c.nom}</h3>
+        <div class="cours-header">
+            <h3>${c.nom}</h3>
+        </div>
+
         <p>${c.description ?? ''}</p>
         <p><strong>${c.date_heure ?? ''}</strong></p>
         <p>Coach: ${c.coach.nom} ${c.coach.prenom}</p>
         <p>Salle: ${c.salle.nom}</p>
-        <p>Duree:  ${realHours} </p>
+        <p>Durée: ${realHours}</p>
+
         <div class="card-actions">
             <button data-id="${c.id_cours}">Réserver</button>
         </div>
     `;
 
         li.querySelector('button').addEventListener('click', () => {
-            console.log('[Cours] Réservation demandée pour', c.id_cours);
             reserverCours(c.id_cours);
         });
 
         list.appendChild(li);
     });
+
 
     console.log('[Cours] Rendu terminé');
 }

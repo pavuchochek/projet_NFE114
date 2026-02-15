@@ -50,11 +50,23 @@ class ControllerCours {
         return CoursDAO::getAllCoursForAdmin();
     }
 
-    public static function getCoursByType(mixed $type, $role): bool|array
+    public static function getCoursByType(mixed $type, $role, $userId): bool|array
     {
-        if($role == 'adherent') {
-            return CoursDAO::getCoursByType($type);
+        if ($role === 'adherent') {
+            $cours = CoursDAO::getAllCoursForAdherent($userId);
+
+            $coursByType = [];
+            $typeNormalized = mb_strtolower(trim($type));
+
+            foreach ($cours as $c) {
+                if (mb_strtolower(trim($c->getType())) === $typeNormalized) {
+                    $coursByType[] = $c->toArray();
+                }
+            }
+
+            return $coursByType;
         }
+
         return false;
     }
 

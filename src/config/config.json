@@ -4,14 +4,14 @@
       "id": "yoga",
       "nom": "Yoga",
       "couleur": "#8B7355",
-      "icone": "",
+      "icone": "\uD83E\uDDD8",
       "description": "Séances de yoga pour tous niveaux"
     },
     {
       "id": "cardio",
       "nom": "Cardio",
       "couleur": "#FF6B6B",
-      "icone": "",
+      "icone": "\uD83C\uDFC3\u200D♀\uFE0F",
       "description": "Entraînement cardio intensif"
     }
   ]

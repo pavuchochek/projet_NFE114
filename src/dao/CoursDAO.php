@@ -100,28 +100,11 @@ class CoursDAO {
         $stmt->execute();
         $coursList = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $nbInscrits = ReservationDAO::getNbReservationsByCoursId($row['id_cours']);
             $coach = new Coach($row['id_coach'], $row['nom_coach'],$row["prenom_coach"], $row['mail_coach']);
             $salle = new Salle($row['id_salle'], $row['nom_salle'], $row['capacite_salle']);
             $cours = new Cours($row['id_cours'], $row['nom_cours'], $row['description_cours'], $row['type_cours'], $coach, $salle, $row['date_heure'], $row['capacite_cours'], $row['duree_cours']);
-            $coursList[] = $cours;
-        }
-        return $coursList;
-    }
-
-    public static function getCoursByType(mixed $type)
-    {
-        $query = "SELECT c.*, co.*, s.* FROM cours c 
-                  JOIN coach co ON c.id_coach = co.id_coach 
-                  JOIN salle s ON c.id_salle = s.id_salle
-                  WHERE c.type_cours = :type_cours AND c.date_heure > NOW()";
-        $stmt = Database::getInstance()->getConnection()->prepare($query);
-        $stmt->bindParam(':type_cours', $type);
-        $stmt->execute();
-        $coursList = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $coach = new Coach($row['id_coach'], $row['nom_coach'], $row['mail_coach']);
-            $salle = new Salle($row['id_salle'], $row['nom_salle'], $row['capacite_salle']);
-            $cours = new Cours($row['id_cours'], $row['nom_cours'], $row['description_cours'], $row['type_cours'], $coach, $salle, $row['date_heure'], $row['capacite_cours'], $row['duree_cours']);
+            $cours->setNbInscrits($nbInscrits);
             $coursList[] = $cours;
         }
         return $coursList;

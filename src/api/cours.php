@@ -7,8 +7,8 @@ switch($_SERVER['REQUEST_METHOD']) {
     case 'GET':
         $payload = requireAuth(['adherent', 'coach', 'admin']);
 
-        if(isset($_GET['type'])) {
-            $cours = ControllerCours::getCoursByType($_GET['type'], $payload->data->role);
+        if(isset($_GET['type_id'])) {
+            $cours = ControllerCours::getCoursByType($_GET['type_id'], $payload->data->role, $payload->data->userId);
         }
         elseif (isset($_GET['id'])) {
             $cours = ControllerCours::getCoursById($_GET['id']);
