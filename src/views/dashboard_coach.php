@@ -13,12 +13,18 @@
     <h1>Bienvenue, Coach</h1>
     <button id="logout_btn" style="position:absolute; top:10px; right:10px;">Déconnexion</button>
     <div id="cours_coach">
-        <h2>Mes cours à venir</h2>
+        <h2>Mes cours</h2>
         <ul id="cours_list"></ul>
+    </div>
+    <div id="informations_personnelles" class="informations_card">
+        <h2>Mes informations personnelles</h2>
+        <p><strong>Nom :</strong> <span id="info_nom"></span></p>
+        <p><strong>Prénom :</strong> <span id="info_prenom"></span></p>
+        <p><strong>Email :</strong> <span id="info_email"></span></p>
     </div>
 </div>
 
-<script src="/assets/js/dashboard_coach.js" defer></script>
+<script src="/assets/js/dashboard_coach.js"  type="module" defer></script>
 <script src="/assets/js/general.js" defer></script>
 </body>
 </html>

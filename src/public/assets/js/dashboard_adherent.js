@@ -1,4 +1,4 @@
-import { getCookie } from './utils.js'
+import { getCookie, convertDecimalHoursToHumanReadable } from './utils.js'
 document.addEventListener('DOMContentLoaded', () => {
     loadCours();
     loadReservations();
@@ -298,16 +298,4 @@ function reserverCours(coursId) {
             loadReservations() // Recharger les réservations pour mettre à jour l'affichage
         }
         });
-}
-
-function convertDecimalHoursToHumanReadable(decimalHours) {
-    const hours = Math.floor(decimalHours);
-    const minutes = Math.round((decimalHours - hours) * 60);
-    var result = `${hours}h ${minutes}m`;
-    if (hours === 0) {
-        result = `${minutes}m`;
-    }else if (minutes === 0) {
-        result = `${hours}h`;
-    }
-    return result;
 }

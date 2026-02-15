@@ -4,7 +4,7 @@ class ControllerCoachs
 {
     public static function getCoachById(mixed $id, $role, $userId)
     {
-        if($role=="coach && $userId == $id") {
+        if($role=="coach" && $userId == $id) {
             return CoachDAO::getCoachById($id);
         }
 

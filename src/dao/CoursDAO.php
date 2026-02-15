@@ -64,16 +64,19 @@ class CoursDAO {
      * Recupere tous les cours attribués à un coach donné qui ne sont pas passés
      */
     public static function getAllCoursForCoach($id_coach) {
-        $query = "SELECT c.*, co.*, s.* FROM cours c 
+        $query = "SELECT c.id_cours AS id_cours, c.nom AS nom_cours, c.description AS description_cours, c.type AS type_cours, c.date_cours AS date_heure, c.capacite_max AS capacite_cours, c.duree AS duree_cours,
+                     co.id_coach AS id_coach, co.nom AS nom_coach, co.prenom as prenom_coach, co.mail AS mail_coach,
+                     s.id_salle AS id_salle, s.nom AS nom_salle, s.capacite_max AS capacite_salle
+                     FROM cours c
                   JOIN coach co ON c.id_coach = co.id_coach 
                   JOIN salle s ON c.id_salle = s.id_salle
-                  WHERE c.id_coach = :id_coach AND c.date_heure > NOW()";
+                  WHERE c.id_coach = :id_coach AND c.date_cours > NOW()";
         $stmt = Database::getInstance()->getConnection()->prepare($query);
         $stmt->bindParam(':id_coach', $id_coach);
         $stmt->execute();
         $coursList = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $coach = new Coach($row['id_coach'], $row['nom_coach'], $row['mail_coach']);
+            $coach = new Coach($row['id_coach'], $row['nom_coach'],$row['prenom_coach'], $row['mail_coach']);
             $salle = new Salle($row['id_salle'], $row['nom_salle'], $row['capacite_salle']);
             $cours = new Cours($row['id_cours'], $row['nom_cours'], $row['description_cours'], $row['type_cours'], $coach, $salle, $row['date_heure'], $row['capacite_cours'], $row['duree_cours']);
             $coursList[] = $cours;

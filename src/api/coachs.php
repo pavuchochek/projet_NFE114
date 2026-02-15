@@ -8,6 +8,7 @@ switch($_SERVER['REQUEST_METHOD']) {
         $payload = requireAuth(['coach', 'admin']);
         if(isset($_GET['id'])) {
             $coachs = ControllerCoachs::getCoachById($_GET['id'], $payload->data->role, $payload->data->userId);
+            $coachs= $coachs->toArray();
         }
         else {
             $coachs = ControllerCoachs::getAllCoachs($payload->data->role);

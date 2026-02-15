@@ -21,7 +21,7 @@
     </div>
 </div>
 
-<script src="/assets/js/dashboard_admin.js" defer></script>
+<script src="/assets/js/dashboard_admin.js" type="module" defer></script>
 <script src="/assets/js/general.js" defer></script>
 </body>
 </html>
