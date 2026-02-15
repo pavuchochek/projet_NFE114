@@ -68,7 +68,7 @@ function renderCours(cours) {
         <p><strong>${c.date_heure ?? ''}</strong></p>
         <p>Salle: ${c.salle.nom}</p>
         <p>Duree:  ${realHours} </p>
-        <p>${c.nbParticipants}/${c.nbMax}</p>
+        <p>${c.nb_inscrits}/${c.capacite}</p>
         <button class="participants-btn" data-cours-id="${c.id_cours}">Voir les participants</button>
     `;
 

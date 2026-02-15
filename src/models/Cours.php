@@ -67,6 +67,10 @@ class Cours {
         return $this->nb_inscrits;
     }
 
+    public function setNbInscrits($nb_inscrits) {
+        $this->nb_inscrits = $nb_inscrits;
+    }
+
     public function toJson() {
         $json=$this->toArray();
         return json_encode($json);

@@ -205,3 +205,20 @@ body {
     background-color: #bd2130; /* rouge encore plus foncé au clic */
     transform: translateY(0);
 }
+.participants-btn {
+    margin-top: 15px;
+}
+
+.participants-btn button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    background-color: #2d7ff9;
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.participants-btn button:hover {
+    background-color: #1f66d1;
+}
