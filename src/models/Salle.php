@@ -24,6 +24,11 @@ class Salle {
     }
 
     public function toJson() {
+        $json = $this->toArray();
+        return json_encode($json);
+    }
+
+    public function toArray() {
         return [
             'id_salle' => $this->id_salle,
             'nom' => $this->nom,

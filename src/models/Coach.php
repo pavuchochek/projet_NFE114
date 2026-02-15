@@ -45,6 +45,11 @@ class Coach {
     }
 
     public function toJson() {
+        $json = $this->toJson();
+        return json_encode($json);
+    }
+    public function toArray(): array
+    {
         return [
             'id_coach' => $this->id_coach,
             'nom' => $this->nom,

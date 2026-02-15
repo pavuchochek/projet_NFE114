@@ -19,10 +19,8 @@ async function loadCours() {
         console.log('[Cours] Réponse reçue', response.status);
 
         const data = await response.json();
-        console.log('[Cours] Données', data);
-        const parsedCours = data.map(c => JSON.parse(c));
 
-        renderCours(parsedCours);
+        renderCours(data);
     } catch (error) {
         console.error('[Cours] Erreur', error);
     }
@@ -57,10 +55,9 @@ async function loadReservations() {
         console.log('[Réservations] Réponse reçue', response.status);
 
         const data = await response.json();
-        const parsedReservations = data.map(r => JSON.parse(r));
         console.log('[Réservations] Données', data);
 
-        renderReservations(parsedReservations);
+        renderReservations(data);
     } catch (error) {
         console.error('[Réservations] Erreur', error);
     }
@@ -68,15 +65,14 @@ async function loadReservations() {
 
 async function loadHistory() {
     console.log('[Historique] Fetch démarré');
+    const userId = getCookie('user_id');
     try{
-        const response = await fetch('/api/history.php', {
+        const response = await fetch('/api/history.php?id='+userId, {
             credentials: 'include'
         });
         console.log('[Historique] Réponse reçue', response.status);
         const data = await response.json();
-        const parsedHistory = data.map(r => JSON.parse(r));
-        console.log('[Historique] Données', data);
-        renderHistory(parsedHistory);
+        renderHistory(data);
     }catch(error){
         console.error('[Historique] Erreur', error);
     }
@@ -135,15 +131,17 @@ function renderHistory(history) {
 
     history.forEach(h => {
         const li = document.createElement('li');
-        li.className = 'history-item';
-
+        li.className = 'cours';
         const realHours = convertDecimalHoursToHumanReadable(h.duree);
 
         li.innerHTML = `
-            <h3>${h.cours_nom}</h3>
-            <p>${h.date}</p>
-            <p>Duree: ${realHours}</p>
-        `;
+        <h3>${h.nom}</h3>
+        <p><strong>Date :</strong> ${h.date_heure}</p>
+        <p><strong>Coach :</strong> ${h.coach.nom} ${h.coach.prenom}</p>
+        <p><strong>Salle :</strong> ${h.salle.nom}</p>
+        <p><strong>Durée :</strong> ${realHours}</p>
+        <p><strong>Statut :</strong> ${h.statut}</p>
+    `;
 
         list.appendChild(li);
     });

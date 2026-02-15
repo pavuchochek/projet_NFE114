@@ -68,17 +68,22 @@ class Cours {
     }
 
     public function toJson() {
-        return json_encode([
+        $json=$this->toArray();
+        return json_encode($json);
+    }
+
+    public function toArray() {
+        return [
             'id_cours' => $this->id_cours,
             'nom' => $this->nom,
             'description' => $this->description,
             'type' => $this->type,
-            'coach' => $this->coach->toJsonForCours(),
-            'salle' => $this->salle->toJson(),
+            'coach' => $this->coach->toArray(),
+            'salle' => $this->salle->toArray(),
             'date_heure' => $this->date_heure,
             'capacite' => $this->capacite,
             'duree' => $this->duree,
             'nb_inscrits' => $this->nb_inscrits
-        ]);
+        ];
     }
 }

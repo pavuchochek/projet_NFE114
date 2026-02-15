@@ -21,10 +21,10 @@ class ControllerCours {
            $coursjson = [];
            if (is_array($cours)) {
               foreach($cours as $c) {
-                  $coursjson[] = $c->toJson();
+                  $coursjson[] = $c->toArray();
               }
               } else {
-                  $coursjson = $cours->toJson();
+                  $coursjson = $cours->toArray();
               }
         }
         return $coursjson;
@@ -60,6 +60,22 @@ class ControllerCours {
 
     public static function getCoursHistoryByUserId($userId)
     {
-        return CoursDAO::getCoursHistoryByUserId($userId);
+        $cours = CoursDAO::getCoursHistoryByUserId($userId);
+        if($cours !== false) {
+            $coursjson = [];
+            if (is_array($cours)) {
+                foreach($cours as $c) {
+                    $statut = ReservationDAO::getReservationStatutByCoursIdByUserId($c->getIdCours(), $userId);
+                    $courseArray = $c->toArray();
+                    $courseArray['statut'] = $statut;
+                    $coursjson[] = $courseArray;
+                }
+            } else {
+                $coursjson = $cours->toArray();
+                $statut = ReservationDAO::getReservationStatutByCoursIdByUserId($coursjson->getIdCours(), $userId);
+                $coursjson['statut'] = $statut;
+            }
+        }
+        return $coursjson;
     }
 }

@@ -85,8 +85,12 @@ INSERT INTO cours (nom, description, type, date_cours, duree, capacite_max, id_s
  'Yoga', '2026-03-01 18:00:00', 1.30, 15, 1, 1),
 
 ('Cardio training', 'Entraînement cardio intensif',
- 'Cardio', '2026-03-02 19:00:00', 1.00, 25, 2, 2);
+ 'Cardio', '2026-03-02 19:00:00', 1.00, 25, 2, 2),
+('Calisthenie', 'Entraînement calisthenie pour force et endurance',
+ 'Calisthenie', '2025-03-02 19:00:00', 1.00, 25, 2, 2);
 
 
 INSERT INTO participe (id_adherent, id_cours, date_reservation, statut) VALUES
-(1, 1, NOW(), 'reserve');
+(1, 1, NOW(), 'en attente'),
+(1, 3, '2025-03-01 19:00:00', 'confirmé'),
+(2, 2, NOW(), 'annulé');

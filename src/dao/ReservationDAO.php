@@ -65,5 +65,20 @@ class ReservationDAO {
         return null;
     }
 
+    public static function getReservationStatutByCoursIdByUserId($id_cours, $userId)
+    {
+        $pdo = Database::getConnection();
+        $query = "SELECT p.statut as statut
+                  FROM participe p
+                  JOIN cours c ON p.id_cours = c.id_cours
+                  WHERE p.id_cours = :id_cours 
+                  AND p.id_adherent = :userId";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute(['id_cours' => $id_cours, 'userId' => $userId]);
+        if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            return $row['statut'];
+        }
+        return null;
+    }
 
 }
