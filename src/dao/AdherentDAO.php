@@ -1,6 +1,6 @@
 <?php
-require '../models/Database.php';
-require '../models/Adherent.php';
+require_once '../models/Database.php';
+require_once '../models/Adherent.php';
 
 class AdherentDAO {
    public static function getAdherentById($id): ?Adherent
@@ -33,7 +33,7 @@ class AdherentDAO {
         $stmt->execute(['id' => $id]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($row) {
-            $adherent = new Adherent($row['id_adherent'], $row['nom'], $row['prenom'], $row['email']);
+            $adherent = new Adherent($row['id_adherent'], $row['nom'], $row['prenom'], $row['mail']);
             $adherent->setTelephone($row['telephone']);
             $adherent->setDdn($row['ddn']);
             $adherent->setDateAdherence($row['date_adherence']);

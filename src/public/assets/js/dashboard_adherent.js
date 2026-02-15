@@ -1,7 +1,9 @@
-
+import { getCookie } from './utils.js'
 document.addEventListener('DOMContentLoaded', () => {
     loadCours();
     loadReservations();
+    loadHistory();
+    loadProfil();
 });
 /**
  * Fetch des cours disponibles
@@ -26,6 +28,21 @@ async function loadCours() {
     }
 }
 
+async function loadProfil() {
+    console.log('[Profil] Fetch démarré');
+    const userId = getCookie('user_id');
+    try {
+        const response = await fetch('/api/adherents.php?id='+userId, {
+            credentials: 'include'
+        });
+        console.log('[Profil] Réponse reçue', response.status);
+        const data = await response.json();
+        renderProfil(data);
+    } catch (error) {
+        console.error('[Profil] Erreur', error);
+    }
+}
+
 /**
  * Fetch des réservations utilisateur
  */
@@ -40,11 +57,28 @@ async function loadReservations() {
         console.log('[Réservations] Réponse reçue', response.status);
 
         const data = await response.json();
+        const parsedReservations = data.map(r => JSON.parse(r));
         console.log('[Réservations] Données', data);
 
-        renderReservations(data);
+        renderReservations(parsedReservations);
     } catch (error) {
         console.error('[Réservations] Erreur', error);
+    }
+}
+
+async function loadHistory() {
+    console.log('[Historique] Fetch démarré');
+    try{
+        const response = await fetch('/api/history.php', {
+            credentials: 'include'
+        });
+        console.log('[Historique] Réponse reçue', response.status);
+        const data = await response.json();
+        const parsedHistory = data.map(r => JSON.parse(r));
+        console.log('[Historique] Données', data);
+        renderHistory(parsedHistory);
+    }catch(error){
+        console.error('[Historique] Erreur', error);
     }
 }
 
@@ -89,7 +123,33 @@ function renderCours(cours) {
 
     console.log('[Cours] Rendu terminé');
 }
+function renderHistory(history) {
+    console.log('[Historique] Rendu en cours');
+    const list = document.getElementById('history_list');
+    list.innerHTML = '';
 
+    if (!history.length) {
+        list.innerHTML = '<p>Aucun historique de réservation</p>';
+        return;
+    }
+
+    history.forEach(h => {
+        const li = document.createElement('li');
+        li.className = 'history-item';
+
+        const realHours = convertDecimalHoursToHumanReadable(h.duree);
+
+        li.innerHTML = `
+            <h3>${h.cours_nom}</h3>
+            <p>${h.date}</p>
+            <p>Duree: ${realHours}</p>
+        `;
+
+        list.appendChild(li);
+    });
+
+    console.log('[Historique] Rendu terminé');
+}
 /**
  * Rendu des réservations
  */
@@ -117,6 +177,32 @@ function renderReservations(reservations) {
     });
 
     console.log('[Réservations] Rendu terminé');
+}
+
+function renderProfil(profil) {
+    console.log('[Profil] Rendu en cours');
+
+    const container = document.getElementById('informations_personnelles');
+
+    // Nettoyer le contenu existant sauf le <h2>
+    const heading = container.querySelector('h2');
+    container.innerHTML = '';
+    container.appendChild(heading);
+
+    // Créer les <p> avec la structure HTML correspondante
+    const nom = document.createElement('p');
+    nom.innerHTML = `<strong>Nom :</strong> ${profil.nom}`;
+
+    const prenom = document.createElement('p');
+    prenom.innerHTML = `<strong>Prénom :</strong> ${profil.prenom}`;
+
+    const email = document.createElement('p');
+    email.innerHTML = `<strong>Email :</strong> ${profil.email}`;
+
+    // Ajouter les éléments au container
+    container.appendChild(nom);
+    container.appendChild(prenom);
+    container.appendChild(email);
 }
 
 function convertDecimalHoursToHumanReadable(decimalHours) {

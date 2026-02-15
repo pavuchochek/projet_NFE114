@@ -122,3 +122,41 @@ body {
     transform: translateY(0);
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
+
+
+.informations_card {
+    background-color: #f9f9f9; /* fond doux */
+    border: 1px solid #ddd;    /* contour léger */
+    border-radius: 10px;       /* coins arrondis */
+    padding: 20px;
+    max-width: 400px;
+    margin: 20px auto;         /* centré avec marge verticale */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08); /* ombre légère */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.informations_card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+}
+
+.informations_card h2 {
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+    color: #333;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 5px;
+}
+
+.informations_card p {
+    margin: 8px 0;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.informations_card p strong {
+    color: #222;
+    width: 90px;
+    display: inline-block;
+}

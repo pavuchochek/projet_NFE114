@@ -21,9 +21,20 @@
         <h2>Mes réservations</h2>
         <ul id="reservations_list"></ul>
     </div>
+
+    <div id="history">
+        <h2>Historique des cours passés</h2>
+        <ul id="history_list"></ul>
+    </div>
+    <div id="informations_personnelles" class="informations_card">
+        <h2>Mes informations personnelles</h2>
+        <p><strong>Nom :</strong> <span id="info_nom"></span></p>
+        <p><strong>Prénom :</strong> <span id="info_prenom"></span></p>
+        <p><strong>Email :</strong> <span id="info_email"></span></p>
+    </div>
 </div>
 
-<script src="/assets/js/dashboard_adherent.js" defer></script>
+<script src="/assets/js/dashboard_adherent.js" type="module" defer></script>
 <script src="/assets/js/general.js" defer></script>
 </body>
 </html>

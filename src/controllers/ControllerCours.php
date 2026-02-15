@@ -57,4 +57,9 @@ class ControllerCours {
         }
         return false;
     }
+
+    public static function getCoursHistoryByUserId($userId)
+    {
+        return CoursDAO::getCoursHistoryByUserId($userId);
+    }
 }

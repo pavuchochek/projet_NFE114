@@ -114,4 +114,24 @@ class CoursDAO {
         }
         return $coursList;
     }
+
+    public static function getCoursHistoryByUserId($userId)
+    {
+        $query = "SELECT c.*, co.*, s.* FROM cours c 
+                  JOIN coach co ON c.id_coach = co.id_coach 
+                  JOIN salle s ON c.id_salle = s.id_salle
+                  JOIN participe p ON c.id_cours = p.id_cours
+                  WHERE p.id_adherent = :userId AND c.date_heure <= NOW()";
+        $stmt = Database::getInstance()->getConnection()->prepare($query);
+        $stmt->bindParam(':userId', $userId);
+        $stmt->execute();
+        $coursList = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $coach = new Coach($row['id_coach'], $row['nom'], $row["prenom"], $row['mail']);
+            $salle = new Salle($row['id_salle'], $row['nom'], $row['capacite_salle']);
+            $cours = new Cours($row['id_cours'], $row['nom_cours'], $row['description_cours'], $row['type_cours'], $coach, $salle, $row['date_heure'], $row['capacite_cours'], $row['duree_cours']);
+            $coursList[] = $cours;
+        }
+        return $coursList;
+    }
 }

@@ -35,6 +35,14 @@ switch($_SERVER['REQUEST_METHOD']) {
                     'samesite' => 'Lax'          // protection CSRF basique
                 ]
             );
+            setcookie('user_id', $userId, [
+                'expires' => time()+3600,
+                'path' => '/',
+                'secure' => true,
+                'httponly' => false,
+                'samesite' => 'Lax'
+            ]);
+
 
             Response::json([
                 'success' => true,

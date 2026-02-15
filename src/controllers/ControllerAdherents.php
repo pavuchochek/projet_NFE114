@@ -3,10 +3,10 @@ require_once '../models/Adherent.php';
 require_once '../dao/AdherentDAO.php';
 
 class ControllerAdherents {
-    public static function getAdherentById($id, $role, $userId): Adherent|bool|null
+    public static function getAdherentById($id, $role, $userId): array
     {
         if ($role === 'adherent' && $id == $userId) {
-           return AdherentDAO::getAdherentProfile($id);
+           return AdherentDAO::getAdherentProfile($id)->toJson();
         }
         
         return false;
