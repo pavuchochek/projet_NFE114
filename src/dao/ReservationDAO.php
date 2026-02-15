@@ -3,6 +3,8 @@ require_once '../models/Database.php';
 require_once '../models/Reservation.php';
 require_once '../models/Cours.php';
 require_once '../models/Adherent.php';
+require_once '../dao/CoursDAO.php';
+require_once '../dao/AdherentDAO.php';
 
 
 class ReservationDAO {
@@ -11,22 +13,19 @@ class ReservationDAO {
      */
     public static function getAllReservations($id_adherent) {
         $pdo = Database::getConnection();
-        $query = "SELECT p.* FROM participe p JOIN cours c ON p.id_cours = c.id_cours WHERE p.id_adherent = :id_adherent AND c.date_heure > NOW()";
+        $query = "SELECT p.id_adherent as id_adherent, p.id_cours as id_cours, p.date_reservation as date_reservation, p.statut as statut
+                    FROM participe p 
+                    JOIN cours c ON p.id_cours = c.id_cours 
+                    WHERE p.id_adherent = :id_adherent 
+                    AND c.date_cours > NOW()";
         $stmt = $pdo->prepare($query);
+        $stmt->bindValue(':id_adherent', $id_adherent);
+        $stmt->execute();
         $reservations = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $reservations[] = new Reservation($row['id_reservation'], $row['id_adherent'], $row['id_coach'], $row['date_reservation']);
-        }
-        return $reservations;
-    }
-
-    public static function getReservationsPassedByAdherent($id_adherent) {
-        $pdo = Database::getConnection();
-        $query = "SELECT p.* FROM participe p JOIN cours c ON p.id_cours = c.id_cours WHERE p.id_adherent = :id_adherent AND c.date_heure <= NOW()";
-        $stmt = $pdo->prepare($query);
-        $reservations = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $reservations[] = new Reservation($row['id_reservation'], $row['id_adherent'], $row['id_coach'], $row['date_reservation']);
+            $cours = CoursDAO::getCoursById($row['id_cours']);
+            $adherent = AdherentDAO::getAdherentById($row['id_adherent']);
+            $reservations[] = new Reservation($cours, $adherent, $row['date_reservation'], $row['statut']);
         }
         return $reservations;
     }

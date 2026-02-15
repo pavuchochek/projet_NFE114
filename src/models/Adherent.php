@@ -45,6 +45,15 @@ class Adherent{
         ];
     }
 
+    public function toArrayForCours(): array
+    {
+        return [
+            'id_adherent' => $this->id_adherent,
+            'nom' => $this->nom,
+            'prenom' => $this->prenom
+        ];
+    }
+
     public function toJson() {
         return [
             'id_adherent' => $this->id_adherent,

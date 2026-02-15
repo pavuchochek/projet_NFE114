@@ -166,13 +166,36 @@ function renderReservations(reservations) {
         const li = document.createElement('li');
         li.className = 'reservation';
 
+        let actionsHTML = '';
+        if (r.statut === 'en attente') {
+            actionsHTML = `<button data-id="${r.cours.id_cours}">Confirmer</button>`;
+        }
+
         li.innerHTML = `
-            <h3>${r.cours_nom}</h3>
-            <p>${r.date}</p>
-        `;
+        <h3>${r.cours.nom}</h3>
+        <p><strong>Date du cours :</strong> ${r.cours.date_heure}</p>
+        <p><strong>Date de réservation :</strong> ${r.date_reservation}</p>
+        <p><strong>Statut :</strong> ${r.statut}</p>
+        <p><strong>Coach :</strong> ${r.cours.coach.nom} ${r.cours.coach.prenom}</p>
+        <p><strong>Salle :</strong> ${r.cours.salle.nom}</p>
+        <div class="reservation-actions">
+            ${actionsHTML}
+        </div>
+    `;
+
+        // Ajouter l'écouteur si le bouton existe
+        const btn = li.querySelector('button');
+        if (btn) {
+            btn.addEventListener('click', () => {
+                console.log('[Réservation] Confirmer cours', r.cours.id_cours);
+                confirmReservation(r.cours.id_cours);
+            });
+        }
 
         list.appendChild(li);
     });
+
+
 
     console.log('[Réservations] Rendu terminé');
 }
@@ -201,6 +224,30 @@ function renderProfil(profil) {
     container.appendChild(nom);
     container.appendChild(prenom);
     container.appendChild(email);
+}
+
+function confirmReservation(coursId) {
+    console.log('[Réservation] Confirmation demandée pour le cours', coursId);
+    var userId = getCookie('user_id');
+    fetch('/api/reservation.php', {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+        ,
+        body: JSON.stringify({
+            id_cours: coursId,
+            id_adherent: userId
+        })
+    }).then(response => {
+        if (response.ok) {
+            console.log('[Réservation] Confirmation réussie');
+            loadReservations() // Recharger les réservations pour mettre à jour l'affichage
+        }
+    }).catch(error => {
+        console.error('[Réservation] Erreur lors de la confirmation', error);
+    });
 }
 
 function convertDecimalHoursToHumanReadable(decimalHours) {

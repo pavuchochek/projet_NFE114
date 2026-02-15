@@ -6,11 +6,13 @@ class AdherentDAO {
    public static function getAdherentById($id): ?Adherent
    {
         $pdo = Database::getConnection();
-        $stmt = $pdo->prepare("SELECT * FROM adherent WHERE id_adherent = :id");
+        $stmt = $pdo->prepare(" SELECT a.id_adherent as id_adherent, a.nom as nom_adherent, a.prenom as prenom_adherent, a.mail as mail_adherent
+                                FROM adherent a
+                                WHERE id_adherent = :id");
         $stmt->execute(['id' => $id]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($row) {
-            return new Adherent($row['id_adherent'], $row['nom'], $row['prenom'], $row['email']);
+            return new Adherent($row['id_adherent'], $row['nom_adherent'], $row['prenom_adherent'], $row['mail_adherent']);
         }
         return null;
     }

@@ -4,7 +4,15 @@ require_once '../dao/ReservationDAO.php';
 class ControllerReservations {
     public static function getAllReservations($userId): array
     {
-        return ReservationDAO::getAllReservations($userId);
+        $reservations = ReservationDAO::getAllReservations($userId);
+        if($reservations) {
+            $reservationsJson = [];
+            foreach($reservations as $r) {
+                $reservationsJson[] = $r->toArray();
+            }
+            return $reservationsJson;
+        }
+        return [];
     }
 
     public static function getReservationById($id, $userId) {

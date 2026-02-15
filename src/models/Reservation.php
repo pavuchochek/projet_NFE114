@@ -35,4 +35,13 @@ class Reservation {
             'statut' => $this->statut
         ];
     }
+
+    public function toArray() {
+        return [
+            'cours' => $this->cours->toArray(),
+            'adherent' => $this->adherent->toArrayForCours(),
+            'date_reservation' => $this->date_reservation,
+            'statut' => $this->statut
+        ];
+    }
 }

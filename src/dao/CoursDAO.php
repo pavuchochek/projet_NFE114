@@ -8,7 +8,10 @@ require_once '../dao/ReservationDAO.php';
 class CoursDAO {
 
     public static function getCoursById($id_cours) {
-        $query = "SELECT c.*, co.*, s.* FROM cours c 
+        $query = "SELECT c.id_cours as id_cours, c.nom AS nom_cours, c.description AS description_cours, c.type AS type_cours, c.date_cours as date_heure, c.capacite_max AS capacite_cours, c.duree AS duree_cours,
+                         co.id_coach AS id_coach, co.nom AS nom_coach,co.prenom as prenom_coach, co.mail AS mail_coach,
+                         s.id_salle AS id_salle, s.nom AS nom_salle, s.capacite_max AS capacite_salle
+                  FROM cours c 
                   JOIN coach co ON c.id_coach = co.id_coach 
                   JOIN salle s ON c.id_salle = s.id_salle
                   WHERE c.id_cours = :id_cours";
@@ -16,7 +19,7 @@ class CoursDAO {
         $stmt->bindParam(':id_cours', $id_cours);
         $stmt->execute();
         if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $coach = new Coach($row['id_coach'], $row['nom_coach'], $row['mail_coach']);
+            $coach = new Coach($row['id_coach'], $row['nom_coach'],$row["prenom_coach"], $row['mail_coach']);
             $salle = new Salle($row['id_salle'], $row['nom_salle'], $row['capacite_salle']);
             return new Cours($row['id_cours'], $row['nom_cours'], $row['description_cours'], $row['type_cours'], $coach, $salle, $row['date_heure'], $row['capacite_cours'], $row['duree_cours']);
         }
